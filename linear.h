@@ -4,8 +4,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <float.h>
-#include <fenv.h>
 #include <math.h>
 #include <stdint.h>
+
+// nao sei se vai precisar que esse .h e o .c correspondente existam.
 
 #endif __LINEAR_H__
