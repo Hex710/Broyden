@@ -21,6 +21,11 @@ typedef double rtime_t;
 typedef long long int lint_t;
 
 // SIMD alignment macros (bytes)
+// Exemplo: int x ALIGN_64;
+//          double k ALIGN_64 = 2.1;
+
+#define ALIGN __attribute__((aligned)) // alinhamento   por   um   valor
+				       // máximo útil pra a máquina
 #define ALIGN_64 __attribute__((aligned(64)))
 #define ALIGN_32 __attribute__((aligned(32)))
 #define ALIGN_16 __attribute__((aligned(16)))
