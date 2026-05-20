@@ -11,9 +11,9 @@
 double **montaJacobiana(double *x, long n);
 
 // acha os valores de X(i + 1) a partir da matriz jacobiana, do valor de X(i) e do tamanho do vetor X
-double *achaProxX(double **jacobianas, double *x, long n);
+double *achaProxX(double **jacobianas, double *x, double *fx, long n);
 
 // resolve o sistema nao-linear atraves do metodo de Newton
-double *newton(double **jacobianas, double *x0, double epsilon, long max);
+double *newton(double *x0, double epsilon, long max, long n);
 
 #endif __NEWTON_H__
