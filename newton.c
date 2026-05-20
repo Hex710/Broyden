@@ -45,7 +45,24 @@ double **montaJacobiana(double *x, long n)
     }
 }
 
-double *achaProxX(double **jacobianas, double *x, double *fx, long n);
+double *achaProxX(double **jacobianas, double *x, double *fx, long n)
+{
+    // vetor de X(i+1) e vetor auxiliar para -F(X(i))/J(X(i))
+    double *prox, *y;
+    prox = malloc(sizeof(double) * n);
+    y = malloc(sizeof(double) * n);
+
+    // loop para a equação X(i + 1) = -F(X(i))/J(X(i)) - X(i)
+    for (int i = 0; i < n; i++)
+    {
+        y[i] = 0;
+        for (int j = 0; j < n; j++)
+        {
+            y[i] += fx[j] * jacobianas[i][j] * -1;
+        }
+        prox[i] = y[i] - x[i];
+    }
+}
 
 double *newton(double *x0, double epsilon, long max, long n)
 {
