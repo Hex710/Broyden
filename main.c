@@ -4,5 +4,4 @@
 #include <math.h>
 #include <stdint.h>
 
-#include "linear.h"
 #include "newton.h"
