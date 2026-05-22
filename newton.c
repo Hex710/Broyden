@@ -78,15 +78,5 @@ double *newton(double *x0, double epsilon, long max, long n)
     // monta as jacobianas para X(0) e acha X(1)
     jacobianas = montaJacobiana(x0, n);
     xi = achaProxX(jacobianas, x0, fx, n);
-    // repete o processo de solucionar os sistemas de Broyden e achar X(i + 1) para cada iteração até  o máximo.
-    for (int i = 1; i < max; i++)
-    {
-        fx[0] = -2 * xi[0] * xi[0] + 3 * xi[0] - 2 * xi[1] + 1;
-        for (int i = 1; i < (n - 1); i++)
-            fx[i] = -2 * xi[i] * xi[i] - xi[i - 1] - 2 * xi[i + 1] + 1;
-        fx[n - 1] = -2 * xi[n - 1] * xi[n - 1] + 3 * xi[n - 1] - xi[n - 2];
-        jacobianas = montaJacobiana(xi, n);
-        xi = achaProxX(jacobianas, xi, fx, n);
-    }
     return xi;
 }

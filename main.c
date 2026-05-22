@@ -8,12 +8,11 @@
 
 int main(int argc, char **argv)
 {
-    int sai = argv[1][1];
     long n, max;
-    double eps, *x0;
+    double eps, *x;
     FILE *out;
 
-    if (sai == 111)
+    if (argv[1][1] == 111)
         out = fopen(argv[2], "rb+");
     else
         out = stdout;
@@ -24,10 +23,18 @@ int main(int argc, char **argv)
     scanf(&max);
     fprintf(stdout, "\nEpsilon: ");
     scanf(&eps);
-    x0 = malloc(sizeof(double) * n);
-    fprintf(stdout, "\nValores de x0: ");
+    x = malloc(sizeof(double) * n);
+    fprintf(stdout, "\nValores de x: ");
     for (int i = 0; i < n; i++)
-        scanf(&x0[i]);
+        scanf(&x[i]);
 
-    newton(x0, eps, max, n);
+    // vou perguntar pro professor como que eh para lidar com o epsilon ja que precisa fazer todas as iteracoes
+
+    for (int i = 0; i < max; i++)
+    {
+        for (int j = 0; j < n; j++)
+            fprintf(out, "x%d = %f\n", j, x[j]);
+        fprintf(out, "#\n");
+        x = newton(x, eps, max, n);
+    }
 }
