@@ -9,10 +9,10 @@
 int main(int argc, char **argv)
 {
     long n, max;
-    double eps, *x;
+    double eps, *xi, *xp;
     FILE *out;
 
-    if (argv[1][1] == 111)
+    if (argv[1][1] == 'o')
         out = fopen(argv[2], "rb+");
     else
         out = stdout;
@@ -23,18 +23,23 @@ int main(int argc, char **argv)
     scanf(&max);
     fprintf(stdout, "\nEpsilon: ");
     scanf(&eps);
-    x = malloc(sizeof(double) * n);
+    xi = malloc(sizeof(double) * n);
+    xp = malloc(sizeof(double) * n);
     fprintf(stdout, "\nValores de x: ");
     for (int i = 0; i < n; i++)
-        scanf(&x[i]);
+        scanf(&xp[i]);
 
     // vou perguntar pro professor como que eh para lidar com o epsilon ja que precisa fazer todas as iteracoes
 
     for (int i = 0; i < max; i++)
     {
         for (int j = 0; j < n; j++)
-            fprintf(out, "x%d = %f\n", j, x[j]);
+        {
+            fprintf(out, "x%d = %f\n", j, xp[j]);
+            xi[j] = xp[j];
+        }
         fprintf(out, "#\n");
-        x = newton(x, eps, max, n);
+        xp = newton(xi, max, n);
+        // inserir a parada por epsilon
     }
 }

@@ -64,7 +64,7 @@ double *achaProxX(double **jacobianas, double *x, double *fx, long n)
     }
 }
 
-double *newton(double *x0, double epsilon, long max, long n)
+double *newton(double *x0, long max, long n)
 {
     // vetores de X(i), F(X(i)) e F'(X(i))
     double *xi, *fx, **jacobianas;
