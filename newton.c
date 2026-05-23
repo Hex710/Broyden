@@ -4,38 +4,6 @@
 #include <math.h>
 #include <stdint.h>
 
-double achaDeterminante(double **fx, long n)
-{
-    // caso base para matriz 1 x 1
-    if (n == 1)
-        return fx[0][0];
-
-    // caso base para matriz 2 x 2
-    if (n == 2)
-        return (fx[0][0] * fx[1][1] - fx[0][1] * fx[1][0]);
-
-    // caso geral
-    double sub[n - 1][n - 1], det = 0;
-    for (int i = 0; i < n; i++)
-    {
-        // monta a submatriz n - 1 x n - 1, pulando a primeira linha e a coluna i
-        for (int j = 0; j < n - 1; j++)
-        {
-            for (int k = 0; k < i; k++)
-                sub[j][k] = fx[j + 1][k];
-            for (int k = i; k < n - 1; k++)
-                sub[j][k] = fx[j + 1][k + 1];
-        }
-        // se i for ímpar o determinante da submatriz é multiplicado por -1
-        if (i % 2 == 0)
-            det += fx[i][0] * achaDeterminante(sub, n - 1);
-        else
-            det -= fx[i][0] * achaDeterminante(sub, n - 1);
-    }
-
-    return det;
-}
-
 double **montaJacobiana(double *x, long n)
 {
     // matriz das jacobianas
@@ -102,16 +70,24 @@ double *achaProxX(double **jacobianas, double *x, double *fx, long n)
 double *newton(double *x0, double eps, long max, long n)
 {
     // vetores de X(i), F(X(i)) e F'(X(i))
-    double *xi, *fx, **jacobianas;
+    double *xi, *fx, **jacobianas, max = 0.0;
     xi = malloc(sizeof(double) * n);
     fx = malloc(sizeof(double) * n);
     // resolve os sistemas de Broyden para X(0)
     fx[0] = -2 * x0[0] * x0[0] + 3 * x0[0] - 2 * x0[1] + 1;
+    if (fabs(fx[0]) > max)
+        max = fx[0];
     for (int i = 1; i < (n - 1); i++)
+    {
         fx[i] = -2 * x0[i] * x0[i] - x0[i - 1] - 2 * x0[i + 1] + 1;
+        if (fabs(fx[i]) > fabs(max))
+            max = fx[i];
+    }
     fx[n - 1] = -2 * x0[n - 1] * x0[n - 1] + 3 * x0[n - 1] - x0[n - 2];
+    if (fabs(fx[n - 1]) > max)
+        max = fx[n - 1];
     // caso de parada com base no valor epsilon
-    if (fabs(achaDeterminante(fx, n)) < eps)
+    if (fabs(max) < eps)
     {
         free(xi);
         free(fx);

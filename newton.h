@@ -7,9 +7,6 @@
 #include <math.h>
 #include <stdint.h>
 
-// acha o determinante de uma matriz n x n
-double achaDeterminante(double **fx, long n);
-
 // monta a matriz das jacobianas [F'(X(i))], vai ser uma matriz 3-diagonal acho, recebe o vetor X(i) e o tamanho do vetor
 double **montaJacobiana(double *x, long n);
 
