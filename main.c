@@ -9,7 +9,7 @@
 int main(int argc, char **argv)
 {
     long n, max;
-    double eps, *x;
+    double eps, *x, *aux;
     FILE *out;
 
     if (argv[1][1] == 'o')
@@ -31,10 +31,10 @@ int main(int argc, char **argv)
     for (int i = 0; i < max && x != NULL; i++)
     {
         for (int j = 0; j < n; j++)
-        {
             fprintf(out, "x%d = %f\n", j, x[j]);
-        }
         fprintf(out, "#\n");
-        x = newton(x, eps, max, n);
+        aux = newton(x, eps, max, n);
+        free(x);
+        x = aux;
     }
 }
