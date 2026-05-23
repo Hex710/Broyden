@@ -7,6 +7,9 @@
 #include <math.h>
 #include <stdint.h>
 
+// acha o determinante de uma matriz n x n
+double achaDeterminante(double **fx, long n);
+
 // monta a matriz das jacobianas [F'(X(i))], vai ser uma matriz 3-diagonal acho, recebe o vetor X(i) e o tamanho do vetor
 double **montaJacobiana(double *x, long n);
 
@@ -14,6 +17,6 @@ double **montaJacobiana(double *x, long n);
 double *achaProxX(double **jacobianas, double *x, double *fx, long n);
 
 // resolve o sistema nao-linear atraves do metodo de Newton
-double *newton(double *x0, long max, long n);
+double *newton(double *x0, double eps, long max, long n);
 
 #endif __NEWTON_H__

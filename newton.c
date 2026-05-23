@@ -4,6 +4,38 @@
 #include <math.h>
 #include <stdint.h>
 
+double achaDeterminante(double **fx, long n)
+{
+    // caso base para matriz 1 x 1
+    if (n == 1)
+        return fx[0][0];
+
+    // caso base para matriz 2 x 2
+    if (n == 2)
+        return (fx[0][0] * fx[1][1] - fx[0][1] * fx[1][0]);
+
+    // caso geral
+    double sub[n - 1][n - 1], det = 0;
+    for (int i = 0; i < n; i++)
+    {
+        // monta a submatriz n - 1 x n - 1, pulando a primeira linha e a coluna i
+        for (int j = 0; j < n - 1; j++)
+        {
+            for (int k = 0; k < i; k++)
+                sub[j][k] = fx[j + 1][k];
+            for (int k = i; k < n - 1; k++)
+                sub[j][k] = fx[j + 1][k + 1];
+        }
+        // se i for ímpar o determinante da submatriz é multiplicado por -1
+        if (i % 2 == 0)
+            det += fx[i][0] * achaDeterminante(sub, n - 1);
+        else
+            det -= fx[i][0] * achaDeterminante(sub, n - 1);
+    }
+
+    return det;
+}
+
 double **montaJacobiana(double *x, long n)
 {
     // matriz das jacobianas
@@ -43,6 +75,7 @@ double **montaJacobiana(double *x, long n)
                 jacobianas[i][j] = -1;
         }
     }
+    return jacobianas;
 }
 
 double *achaProxX(double **jacobianas, double *x, double *fx, long n)
@@ -62,9 +95,11 @@ double *achaProxX(double **jacobianas, double *x, double *fx, long n)
         }
         prox[i] = y[i] - x[i];
     }
+    free(y);
+    return prox;
 }
 
-double *newton(double *x0, long max, long n)
+double *newton(double *x0, double eps, long max, long n)
 {
     // vetores de X(i), F(X(i)) e F'(X(i))
     double *xi, *fx, **jacobianas;
@@ -75,8 +110,16 @@ double *newton(double *x0, long max, long n)
     for (int i = 1; i < (n - 1); i++)
         fx[i] = -2 * x0[i] * x0[i] - x0[i - 1] - 2 * x0[i + 1] + 1;
     fx[n - 1] = -2 * x0[n - 1] * x0[n - 1] + 3 * x0[n - 1] - x0[n - 2];
+    // caso de parada com base no valor epsilon
+    if (fabs(achaDeterminante(fx, n)) < eps)
+    {
+        free(xi);
+        free(fx);
+        return NULL;
+    }
     // monta as jacobianas para X(0) e acha X(1)
     jacobianas = montaJacobiana(x0, n);
     xi = achaProxX(jacobianas, x0, fx, n);
+    free(fx);
     return xi;
 }
