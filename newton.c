@@ -4,6 +4,8 @@
 #include <math.h>
 #include <stdint.h>
 
+#include "newton.h"
+
 double **montaJacobiana(double *x, long n)
 {
     // matriz das jacobianas
@@ -73,7 +75,7 @@ double *newton(double *x0, double eps, long max, long n)
     double *xi, *fx, **jacobianas, max = 0.0;
     xi = malloc(sizeof(double) * n);
     fx = malloc(sizeof(double) * n);
-    // resolve os sistemas de Broyden para X(0)
+    // resolve os sistemas de Broyden para X(0) e acha o maior valor absoluto de fx
     fx[0] = -2 * x0[0] * x0[0] + 3 * x0[0] - 2 * x0[1] + 1;
     if (fabs(fx[0]) > max)
         max = fx[0];
