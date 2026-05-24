@@ -50,7 +50,7 @@ double **montaJacobiana(double *x, long n)
 
 double *achaProxX(double **jacobianas, double *x, double *fx, long n)
 {
-    // vetor de X(i+1) e vetor auxiliar para -F(X(i))/J(X(i))
+    // vetor de X(i+1)
     double *prox;
     prox = malloc(sizeof(double) * n);
 
@@ -69,11 +69,11 @@ double *achaProxX(double **jacobianas, double *x, double *fx, long n)
         prox[n - 1] = jacobianas[n - 1][n - 1] / fx[n - 1] * -1;
     for (int i = n - 2; i >= 0; i--)
     {
-        double y = fx[i] - prox[i + 1];
+        double y = (fx[i] * -1) + prox[i + 1];
         if (y == 0)
             prox[i] = 0;
         else
-            prox[i] = jacobianas[i][i] / ((fx[i] * -1) - prox[i + 1]);
+            prox[i] = jacobianas[i][i] / y;
     }
     // acha X(i+1) em X(i+1) = Δ + X(i)
     for (int i = 0; i < n; i++)
