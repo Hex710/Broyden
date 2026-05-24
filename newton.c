@@ -61,10 +61,23 @@ double *achaProxX(double **jacobianas, double *x, double *fx, long n)
         jacobianas[i + 1][i + 1] -= -1 * m;
         fx[i + 1] -= fx[i] * m;
     }
-    // temos que ver pro caso do fx ser 0
-    prox[n - 1] = jacobianas[n - 1][n - 1] / fx[n - 1] - x[n - 1];
+    // acha Δ em J(X) * Δ = -F(X)
+    // teste para impedir divisao por 0
+    if (fx[n - 1] == 0)
+        prox[n - 1] = 0;
+    else
+        prox[n - 1] = jacobianas[n - 1][n - 1] / fx[n - 1] * -1;
     for (int i = n - 2; i >= 0; i--)
-        prox[i] = jacobianas[i][i] / fx[i] - prox[i + 1] - x[i];
+    {
+        double y = fx[i] - prox[i + 1];
+        if (y == 0)
+            prox[i] = 0;
+        else
+            prox[i] = jacobianas[i][i] / ((fx[i] * -1) - prox[i + 1]);
+    }
+    // acha X(i+1) em X(i+1) = Δ + X(i)
+    for (int i = 0; i < n; i++)
+        prox[i] += x[i];
 
     return prox;
 }
@@ -73,7 +86,6 @@ double *newton(double *x0, double eps, long max, long n)
 {
     // vetores de X(i), F(X(i)) e F'(X(i))
     double *xi, *fx, **jacobianas, max = 0.0;
-    xi = malloc(sizeof(double) * n);
     fx = malloc(sizeof(double) * n);
     // resolve os sistemas de Broyden para X(0) e acha o maior valor absoluto de fx
     fx[0] = -2 * x0[0] * x0[0] + 3 * x0[0] - 2 * x0[1] + 1;
@@ -91,13 +103,16 @@ double *newton(double *x0, double eps, long max, long n)
     // caso de parada com base no valor epsilon
     if (fabs(max) < eps)
     {
-        free(xi);
         free(fx);
         return NULL;
     }
     // monta as jacobianas para X(0) e acha X(1)
     jacobianas = montaJacobiana(x0, n);
     xi = achaProxX(jacobianas, x0, fx, n);
+    // libera o espaco alocado que nao sera mais utilizado
+    for (int i = 0; i < n; i++)
+        free(jacobianas[i]);
+    free(jacobianas);
     free(fx);
     return xi;
 }
