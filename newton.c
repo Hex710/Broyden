@@ -51,21 +51,21 @@ double **montaJacobiana(double *x, long n)
 double *achaProxX(double **jacobianas, double *x, double *fx, long n)
 {
     // vetor de X(i+1) e vetor auxiliar para -F(X(i))/J(X(i))
-    double *prox, *y;
+    double *prox;
     prox = malloc(sizeof(double) * n);
-    y = malloc(sizeof(double) * n);
 
-    // loop para a equação X(i + 1) = -F(X(i))/J(X(i)) - X(i)
-    for (int i = 0; i < n; i++)
+    // metodo de gauss alterado para a matriz 3-diagonal jacobiana
+    for (int i = 0; i < (n - 1); i++)
     {
-        y[i] = 0;
-        for (int j = 0; j < n; j++)
-        {
-            y[i] += fx[j] * jacobianas[i][j] * -1;
-        }
-        prox[i] = y[i] - x[i];
+        double m = -2 / jacobianas[i][i];
+        jacobianas[i + 1][i + 1] -= -1 * m;
+        fx[i + 1] -= fx[i] * m;
     }
-    free(y);
+    // temos que ver pro caso do fx ser 0
+    prox[n - 1] = jacobianas[n - 1][n - 1] / fx[n - 1] - x[n - 1];
+    for (int i = n - 2; i >= 0; i--)
+        prox[i] = jacobianas[i][i] / fx[i] - prox[i + 1] - x[i];
+
     return prox;
 }
 
