@@ -12,11 +12,13 @@ int main(int argc, char **argv)
     double eps, *x, *aux;
     FILE *out;
 
-    if (argv[1][1] == 'o')
+    // determina qual vai ser a saida do programa
+    if ((argc > 0) && (argv[1][1] == 'o'))
         out = fopen(argv[2], "rb+");
     else
         out = stdout;
 
+    // pede e recebe os valores necessarios para os programas
     fprintf(stdout, "Dimensao do SNLB: ");
     scanf(&n);
     fprintf(stdout, "\nNumero maximo de iteracoes: ");
@@ -28,6 +30,7 @@ int main(int argc, char **argv)
     for (int i = 0; i < n; i++)
         scanf(&x[i]);
 
+    // loop principal, ocorre ate que a iteracao maxima seja atingida, ou que a funcao newton chegue em uma condicao de parada (epsilon)
     for (int i = 0; i < max && x != NULL; i++)
     {
         for (int j = 0; j < n; j++)
@@ -37,4 +40,7 @@ int main(int argc, char **argv)
         free(x);
         x = aux;
     }
+
+    if ((argc > 0) && (argv[1][1] == 'o'))
+        fclose(out);
 }
