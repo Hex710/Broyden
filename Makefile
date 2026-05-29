@@ -1,5 +1,5 @@
 parametrosCompilacao=-Wall #-Wshadow
-nomePrograma=trab
+nomePrograma=broyden
 
 all: $(nomePrograma)
 
