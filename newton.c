@@ -37,11 +37,11 @@ double **montaJacobiana(double *x, long n)
             // matriz das jacobianas eh uma matriz 3-diagonal
             if ((i < j - 1) || (i > j + 1))
                 jacobianas[i][j] = 0;
-            else if (i = j)
+            else if (i == j)
                 jacobianas[i][j] = -4 * x[j] + 3;
-            else if (i = j + 1)
+            else if (i == j + 1)
                 jacobianas[i][j] = -2;
-            else if (i = j - 1)
+            else if (i == j - 1)
                 jacobianas[i][j] = -1;
         }
     }
@@ -82,7 +82,7 @@ double *achaProxX(double **jacobianas, double *x, double *fx, long n)
     return prox;
 }
 
-double *newton(double *x0, double eps, long max, long n)
+double *newton(double *x0, double eps, long n)
 {
     // vetores de X(i), F(X(i)) e F'(X(i))
     double *xi, *fx, **jacobianas, max = 0.0;

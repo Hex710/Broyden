@@ -14,6 +14,6 @@ double **montaJacobiana(double *x, long n);
 double *achaProxX(double **jacobianas, double *x, double *fx, long n);
 
 // resolve o sistema nao-linear atraves do metodo de Newton
-double *newton(double *x0, double eps, long max, long n);
+double *newton(double *x0, double eps, long n);
 
-#endif __NEWTON_H__
+#endif

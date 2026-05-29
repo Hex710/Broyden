@@ -20,23 +20,23 @@ int main(int argc, char **argv)
 
     // pede e recebe os valores necessarios para os programas
     fprintf(stdout, "Dimensao do SNLB: ");
-    scanf(&n);
+    scanf("%ld", &n);
     fprintf(stdout, "\nNumero maximo de iteracoes: ");
-    scanf(&max);
+    scanf("%ld", &max);
     fprintf(stdout, "\nEpsilon: ");
-    scanf(&eps);
+    scanf("%lf", &eps);
     x = malloc(sizeof(double) * n);
     fprintf(stdout, "\nValores de x: ");
     for (int i = 0; i < n; i++)
-        scanf(&x[i]);
+        scanf("%lf", &x[i]);
 
     // loop principal, ocorre ate que a iteracao maxima seja atingida, ou que a funcao newton chegue em uma condicao de parada (epsilon)
     for (int i = 0; i < max && x != NULL; i++)
     {
         for (int j = 0; j < n; j++)
-            fprintf(out, "x%d = %f\n", j, x[j]);
+            fprintf(out, "x%d = %lf\n", j, x[j]);
         fprintf(out, "#\n");
-        aux = newton(x, eps, max, n);
+        aux = newton(x, eps, n);
         free(x);
         x = aux;
     }
