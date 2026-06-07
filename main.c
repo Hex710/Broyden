@@ -13,7 +13,7 @@ int main(int argc, char **argv)
     FILE *out;
 
     // determina qual vai ser a saida do programa
-    if ((argc > 0) && (argv[1][1] == 'o'))
+    if ((argc > 1) && (argv[1][1] == 'o'))
         out = fopen(argv[2], "rb+");
     else
         out = stdout;
@@ -41,6 +41,6 @@ int main(int argc, char **argv)
         x = aux;
     }
 
-    if ((argc > 0) && (argv[1][1] == 'o'))
+    if ((argc > 1) && (argv[1][1] == 'o'))
         fclose(out);
 }
