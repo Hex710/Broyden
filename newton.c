@@ -58,7 +58,7 @@ double *achaProxX(double **jacobianas, double *x, double *fx, long n)
     for (int i = 0; i < (n - 1); i++)
     {
         double m = -2 / jacobianas[i][i];
-        jacobianas[i + 1][i + 1] -= -1 * m;
+        jacobianas[i + 1][i + 1] += m;
         fx[i + 1] -= fx[i] * m;
     }
     // acha Δ em J(X) * Δ = -F(X)
@@ -69,7 +69,7 @@ double *achaProxX(double **jacobianas, double *x, double *fx, long n)
         prox[n - 1] = jacobianas[n - 1][n - 1] / fx[n - 1] * -1;
     for (int i = n - 2; i >= 0; i--)
     {
-        double y = (fx[i] * -1) + prox[i + 1];
+        double y = prox[i + 1] - fx[i];
         if (y == 0)
             prox[i] = 0;
         else

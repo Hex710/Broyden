@@ -1,4 +1,4 @@
-parametrosCompilacao=-Wall #-Wshadow
+parametrosCompilacao= -O3 -march=native -mavx -fopt-info-vec
 nomePrograma=broyden
 
 all: $(nomePrograma)
