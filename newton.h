@@ -7,6 +7,8 @@
 #include <math.h>
 #include <stdint.h>
 
+#include "utils.h"
+
 // monta a matriz das jacobianas [F'(X(i))], vai ser uma matriz 3-diagonal acho, recebe o vetor X(i) e o tamanho do vetor
 double **montaJacobiana(double *x, long n);
 
@@ -14,6 +16,6 @@ double **montaJacobiana(double *x, long n);
 double *achaProxX(double **jacobianas, double *x, double *fx, long n);
 
 // resolve o sistema nao-linear atraves do metodo de Newton
-double *newton(double *x0, double eps, long n);
+double *newton(double *x0, double eps, long n, rtime_t *jacob, rtime_t *sist);
 
 #endif

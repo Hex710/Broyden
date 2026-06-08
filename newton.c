@@ -82,10 +82,11 @@ double *achaProxX(double **jacobianas, double *x, double *fx, long n)
     return prox;
 }
 
-double *newton(double *x0, double eps, long n)
+double *newton(double *x0, double eps, long n, rtime_t *jacob, rtime_t *sist)
 {
     // vetores de X(i), F(X(i)) e F'(X(i))
     double *xi, *fx, **jacobianas, max = 0.0;
+    rtime_t aux = 0;
     fx = malloc(sizeof(double) * n);
     // resolve os sistemas de Broyden para X(0) e acha o maior valor absoluto de fx
     fx[0] = -2 * x0[0] * x0[0] + 3 * x0[0] - 2 * x0[1] + 1;
@@ -107,8 +108,12 @@ double *newton(double *x0, double eps, long n)
         return NULL;
     }
     // monta as jacobianas para X(0) e acha X(1)
+    aux = timestamp();
     jacobianas = montaJacobiana(x0, n);
+    *jacob += timestamp() - aux;
+    aux = timestamp();
     xi = achaProxX(jacobianas, x0, fx, n);
+    *sist += timestamp() - aux;
     // libera o espaco alocado que nao sera mais utilizado
     for (int i = 0; i < n; i++)
         free(jacobianas[i]);
