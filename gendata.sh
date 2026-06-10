@@ -6,7 +6,7 @@ PROG=${1:-broyden}
 tipo=${2:-avx}
 CPU=${3:-3}
 
-DATA_DIR="${PROG}/resultados"
+DATA_DIR="resultados"
 TEMPOS="${DATA_DIR}/Tempos.csv"
 
 METRICA="FLOPS_DP L3CACHE ENERGY"
@@ -17,7 +17,7 @@ mkdir -p ${DATA_DIR}
 
 echo "performance" > /sys/devices/system/cpu/cpufreq/policy${CPU}/scaling_governor
 
-make purge
+make clean
 make
 
 for m in ${METRICA}
@@ -25,16 +25,15 @@ do
     LIKWID_LOG="${DATA_DIR}/${m}_${tipo}.log"
     rm -f ${TEMPOS}
     rm -f ${LIKWID_LOG}
-    
+
     for n in $TAMANHOS
     do
 	LIKWID_OUT="${DATA_DIR}/${m}_${tipo}_${n}.txt"
-    LIKWID_IN="in_${n}.txt"
 	
-	echo "--->>  $m: ./${PROG} $n" >/dev/tty
-	likwid-perfctr -O -C ${CPU} -g ${m} -o ${LIKWID_OUT} -m ./${PROG} > ${LIKWID_IN}
+	echo "likwid-perfctr -O -C ${CPU} -g ${m} -o ${LIKWID_OUT} -m ./${PROG} -o sai.txt $n" >/dev/tty
+
 	    
-	# echo "===> N: ${n} <==" >> ${LIKWID_LOG}
+	echo "===> N: ${n} <==" >> ${LIKWID_LOG}
 	cat ${LIKWID_OUT} >> ${LIKWID_LOG}
 	rm -f ${LIKWID_OUT}
     done

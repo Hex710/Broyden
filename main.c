@@ -3,6 +3,7 @@
 #include <float.h>
 #include <math.h>
 #include <stdint.h>
+#include <likwid-marker.h>
 
 #include "newton.h"
 #include "utils.h"
@@ -13,6 +14,8 @@ int main(int argc, char **argv)
     double eps, *x, *aux;
     rtime_t temp, newt, *jacob, *sist;
     FILE *out;
+
+    LIKWID_MARKER_INIT;
 
     // determina qual vai ser a saida do programa
     if ((argc > 1) && (argv[1][1] == 'o'))
@@ -25,17 +28,12 @@ int main(int argc, char **argv)
     sist = calloc(1, sizeof(rtime_t));
 
     // pede e recebe os valores necessarios para os programas
-    fprintf(stdout, "Dimensao do SNLB: ");
-    fscanf(stdin, "%ld", &n);
-    fprintf(stdout, "\nNumero maximo de iteracoes: ");
-    fscanf(stdin, "%ld", &max);
-    fprintf(stdout, "\nEpsilon: ");
-    fscanf(stdin, "%lf", &eps);
-    x = malloc(sizeof(double) * n);
-    fprintf(stdout, "\nValores de x: ");
-    for (int i = 0; i < n; i++)
-        fscanf(stdin, "%lf", &x[i]);
+    n = atoi(argv[3]);
+    max = 25;
+    eps = 0.0;
+    x = calloc(n, sizeof(double));
 
+    LIKWID_MARKER_START("newton");
     // loop principal, ocorre ate que a iteracao maxima seja atingida, ou que a funcao newton chegue em uma condicao de parada (epsilon)
     for (int i = 0; i < max && x != NULL; i++)
     {
@@ -48,6 +46,7 @@ int main(int argc, char **argv)
         free(x);
         x = aux;
     }
+    LIKWID_MARKER_STOP("newton");
     fprintf(out, "###########\n# Tempo Total: %lf\n# Tempo Jacobiana: %lf\n# Tempo SL: %lf\n###########\n", newt, *jacob, *sist);
 
     if ((argc > 1) && (argv[1][1] == 'o'))
@@ -55,4 +54,6 @@ int main(int argc, char **argv)
 
     free(jacob);
     free(sist);
+
+    LIKWID_MARKER_CLOSE;
 }
