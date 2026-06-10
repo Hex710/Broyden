@@ -4,10 +4,10 @@ nomePrograma=broyden
 all: $(nomePrograma)
 
 $(nomePrograma): main.o newton.o utils.o
-	gcc -I /usr/local/include/ -L /usr/local/lib -DLIKWID_PERFORM -o $(nomePrograma) main.o newton.o utils.o -lm $(parametrosCompilacao) -llikwid
+	gcc -I/usr/local/include/ -DLIKWID_PERFMON -o $(nomePrograma) main.o newton.o utils.o -lm $(parametrosCompilacao) -L/usr/local/lib -llikwid
 
 main.o: main.c
-	gcc -c main.c -DLIKWID_PERFORM $(parametrosCompilacao)
+	gcc -c main.c $(parametrosCompilacao)
 
 newton.o: newton.h newton.c
 	gcc -c newton.c $(parametrosCompilacao)

@@ -3,8 +3,8 @@
 #include <float.h>
 #include <math.h>
 #include <stdint.h>
-#include <likwid-marker.h>
 
+#include "likwid.h"
 #include "newton.h"
 #include "utils.h"
 
@@ -19,16 +19,20 @@ int main(int argc, char **argv)
 
     // determina qual vai ser a saida do programa
     if ((argc > 1) && (argv[1][1] == 'o'))
+    {
         out = fopen(argv[2], "rb+");
+        n = atoi(argv[3]);
+    }
     else
+    {
         out = stdout;
-
+        n = atoi(argv[2]);
+    }
     newt = 0;
     jacob = calloc(1, sizeof(rtime_t));
     sist = calloc(1, sizeof(rtime_t));
 
     // pede e recebe os valores necessarios para os programas
-    n = atoi(argv[3]);
     max = 25;
     eps = 0.0;
     x = calloc(n, sizeof(double));
