@@ -4,6 +4,7 @@
 #include <math.h>
 #include <stdint.h>
 
+#include "likwid.h"
 #include "newton.h"
 
 double **montaJacobiana(double *x, long n)

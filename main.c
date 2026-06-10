@@ -15,7 +15,7 @@ int main(int argc, char **argv)
     rtime_t temp, newt, *jacob, *sist;
     FILE *out;
 
-    LIKWID_MARKER_INIT;
+    likwid_markerInit();
 
     // determina qual vai ser a saida do programa
     if ((argc > 1) && (argv[1][1] == 'o'))
@@ -37,7 +37,7 @@ int main(int argc, char **argv)
     eps = 0.0;
     x = calloc(n, sizeof(double));
 
-    LIKWID_MARKER_START("newton");
+    likwid_markerStartRegion("newton");
     // loop principal, ocorre ate que a iteracao maxima seja atingida, ou que a funcao newton chegue em uma condicao de parada (epsilon)
     for (int i = 0; i < max && x != NULL; i++)
     {
@@ -50,7 +50,7 @@ int main(int argc, char **argv)
         free(x);
         x = aux;
     }
-    LIKWID_MARKER_STOP("newton");
+    likwid_markerStopRegion("newton");
     fprintf(out, "###########\n# Tempo Total: %lf\n# Tempo Jacobiana: %lf\n# Tempo SL: %lf\n###########\n", newt, *jacob, *sist);
 
     if ((argc > 1) && (argv[1][1] == 'o'))
@@ -59,5 +59,6 @@ int main(int argc, char **argv)
     free(jacob);
     free(sist);
 
-    LIKWID_MARKER_CLOSE;
+    likwid_markerClose();
+    return 0;
 }

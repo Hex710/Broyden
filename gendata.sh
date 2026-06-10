@@ -21,20 +21,20 @@ make
 for m in ${METRICA}
 do
     LIKWID_LOG="${DATA_DIR}/${m}.log"
+    rm -f ${LIKWID_LOG}
     touch ${LIKWID_LOG}
 
     for n in $TAMANHOS
     do
 	LIKWID_OUT="${DATA_DIR}/${m}_${n}.txt"
 	touch ${LIKWID_OUT}
-	echo "${m} ./${PROG} $n" >/dev/tty
-    likwid-perfctr -C ${CPU} -g ${m} -o ${LIKWID_OUT} -m ./${PROG} -o sai.txt $n
+	echo "${m}: ./${PROG} $n" >/dev/tty
+    likwid-perfctr -C ${CPU} -g ${m} -m ./${PROG} -o sai.txt $n >${LIKWID_OUT}
 	    
 	echo "===> N: ${n} <==" >> ${LIKWID_LOG}
 	cat ${LIKWID_OUT} >> ${LIKWID_LOG}
+    rm -f ${LIKWID_OUT}
     done
-
-   # ${CMD_DIR}/genplot.py < ${LIKWID_LOG} > ${LIKWID_LOG%%.log}.csv
 done
 
 echo "powersave" > /sys/devices/system/cpu/cpufreq/policy${CPU}/scaling_governor 

@@ -7,6 +7,7 @@
 #include <math.h>
 #include <stdint.h>
 
+#include "likwid.h"
 #include "utils.h"
 
 // monta a matriz das jacobianas [F'(X(i))], vai ser uma matriz 3-diagonal acho, recebe o vetor X(i) e o tamanho do vetor

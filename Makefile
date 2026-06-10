@@ -1,10 +1,11 @@
-parametrosCompilacao= -O3 -march=native -mavx -fopt-info-vec
+parametrosCompilacao= -O3 -march=native -mavx -fopt-info-vec -L/usr/local/lib -llikwid
 nomePrograma=broyden
+CFlags=-I/usr/local/include/ -LIKWID_PERFMON
 
 all: $(nomePrograma)
 
 $(nomePrograma): main.o newton.o utils.o
-	gcc -I/usr/local/include/ -DLIKWID_PERFMON -o $(nomePrograma) main.o newton.o utils.o -lm $(parametrosCompilacao) -L/usr/local/lib -llikwid
+	gcc ${clean} -o $(nomePrograma) main.o newton.o utils.o -lm $(parametrosCompilacao)
 
 main.o: main.c
 	gcc -c main.c $(parametrosCompilacao)
