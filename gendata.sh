@@ -29,7 +29,7 @@ do
     for n in $TAMANHOS
     do
 	LIKWID_OUT="${DATA_DIR}/${m}_${tipo}_${n}.txt"
-    LIKWID_IN="${DATA_DIR}/in_${n}.txt"
+    LIKWID_IN="in_${n}.txt"
 	
 	echo "--->>  $m: ./${PROG} $n" >/dev/tty
 	likwid-perfctr -O -C ${CPU} -g ${m} -o ${LIKWID_OUT} -m ./${PROG} > ${LIKWID_IN}

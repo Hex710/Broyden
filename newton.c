@@ -50,7 +50,7 @@ double **montaJacobiana(double *x, long n)
 
 double *achaProxX(double **jacobianas, double *x, double *fx, long n)
 {
-    // vetor de X(i+1)
+    // vetor de Δ e de X(i+1)
     double *prox;
     prox = malloc(sizeof(double) * n);
 
