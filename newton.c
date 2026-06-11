@@ -13,32 +13,15 @@ double **montaJacobiana(double *x, long n)
     double **jacobianas;
     jacobianas = malloc(sizeof(double) * n);
     for (int i = 0; i < n; i++)
-        jacobianas[i] = malloc(sizeof(double) * n);
+        jacobianas[i] = calloc(n, sizeof(double));
 
-    // jacobianas no começo e no fim da matriz sao um caso aparte
-    jacobianas[0][0] = -4 * x[0] + 3;
-    jacobianas[0][1] = -2;
-    jacobianas[1][0] = -1;
-    jacobianas[n - 1][n - 1] = -4 * x[n - 1] + 3;
-    jacobianas[n - 2][n - 1] = -2;
-    jacobianas[n - 1][n - 2] = -1;
-    for (int i = 2; i < n; i++)
+    // acha o valor das jacobianas
+    for (int i = 0; i < n; i++)
     {
-        jacobianas[0][i] = 0;
-        jacobianas[i][0] = 0;
-        jacobianas[n - 1][n - i - 1] = 0;
-        jacobianas[n - i - 1][n - 1] = 0;
-    }
-
-    // acha o valor das jacobianas entre 0 e n - 1
-    for (int i = 1; i < n - 1; i++)
-    {
-        for (int j = 1; j < n - 1; j++)
+        for (int j = 0; j < n; j++)
         {
             // matriz das jacobianas eh uma matriz 3-diagonal
-            if ((i < j - 1) || (i > j + 1))
-                jacobianas[i][j] = 0;
-            else if (i == j)
+            if (i == j)
                 jacobianas[i][j] = -4 * x[j] + 3;
             else if (i == j + 1)
                 jacobianas[i][j] = -2;

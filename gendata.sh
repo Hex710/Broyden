@@ -9,7 +9,7 @@ DATA_DIR="resultados"
 
 METRICA="FLOPS_DP L3CACHE ENERGY"
 
-TAMANHOS="32 64 128 256 512 1000 "
+TAMANHOS="32 64 128 256 512 1000 2000 4000 8000 9000 10000 20000"
 
 mkdir -p ${DATA_DIR}
 
@@ -27,9 +27,12 @@ do
     for n in $TAMANHOS
     do
 	LIKWID_OUT="${DATA_DIR}/${m}_${n}.txt"
+    BROYDEN_OUT="${DATA_DIR}/${m}_${n}_sai.txt"
+    rm -f ${BROYDEN_OUT}
 	touch ${LIKWID_OUT}
+    touch ${BROYDEN_OUT}
 	echo "${m}: ./${PROG} $n" >/dev/tty
-    likwid-perfctr -C ${CPU} -g ${m} -m ./${PROG} -o sai.txt $n >${LIKWID_OUT}
+    likwid-perfctr -C ${CPU} -g ${m} -m ./${PROG} -o ${BROYDEN_OUT} $n >${LIKWID_OUT}
 	    
 	echo "===> N: ${n} <==" >> ${LIKWID_LOG}
 	cat ${LIKWID_OUT} >> ${LIKWID_LOG}
